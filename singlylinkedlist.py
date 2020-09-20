@@ -100,60 +100,61 @@ class LinkedList:
             return 0
         return 1 + self.len_recursive(node.next)
 
-    def swap_nodes(self, key_1, key_2):
+    def swap_nodes(self, key1, key2):
+        prev_node = None
+        cur_node = self.head
+        prev_node_2 = None
+        cur_node_2 = self.head
 
-        if key_1 == key_2:
-            return 
+        if key1 == key2:
+            return
+        
 
-        prev_1 = None 
-        curr_1 = self.head 
-        while curr_1 and curr_1.data != key_1:
-            prev_1 = curr_1 
-            curr_1 = curr_1.next
 
-        prev_2 = None 
-        curr_2 = self.head 
-        while curr_2 and curr_2.data != key_2:
-            prev_2 = curr_2 
-            curr_2 = curr_2.next
+        while cur_node and cur_node.data != key1:
+            prev_node = cur_node
+            cur_node = cur_node.next
+        while cur_node_2.data != key2:
+            prev_node_2 = cur_node_2
+            cur_node_2 = cur_node_2.next
+            
+        if prev_node == None or prev_node_2 == None:
+            cur_node.next = cur_node_2.next  # 1 > 3
+            cur_node_2.next = cur_node  # 2 > 1
+            self.head = cur_node_2
+            return
 
-        if not curr_1 or not curr_2:
-            return 
+        # 1 > 2 > 3 > 4
 
-        if prev_1:
-            prev_1.next = curr_2
-        else:
-            self.head = curr_2
+        #1 > 2
+        #2 > 3
+        
+        prev_node.next = cur_node_2 # 1 > 3
+        cur_node.next = cur_node_2.next # 2 > 4
+        cur_node_2.next = cur_node # 3 > 2
 
-        if prev_2:
-            prev_2.next = curr_1
-        else:
-            self.head = curr_1
-
-        curr_1.next, curr_2.next = curr_2.next, curr_1.next
-
-    def print_helper(self, node, name):
-        if node is None:
-            print(name + ": None")
-        else:
-            print(name + ":" + node.data)
 
     def reverse_iterative(self):
+        #A>B>C>D      D>C>B>A
 
-        prev = None 
-        cur = self.head
-        while cur:
-            nxt = cur.next
-            cur.next = prev
-            
-            self.print_helper(prev, "PREV")
-            self.print_helper(cur, "CUR")
-            self.print_helper(nxt, "NXT")
-            print("\n")
+        prev_node = None 
+        cur_node = self.head
+        
+        while cur_node:
+            nxt = cur_node.next
+            cur_node.next = prev_node
+            prev_node = cur_node
+            cur_node = nxt
 
-            prev = cur 
-            cur = nxt 
-        self.head = prev
+        self.head = prev_node     # At end of loop, prev node is last node and cur node has been assigned None
+
+
+
+
+
+
+
+
 
     def reverse_recursive(self):
 
@@ -163,21 +164,82 @@ class LinkedList:
 
             nxt = cur.next
             cur.next = prev
-            prev = cur 
-            cur = nxt 
+            prev = cur
+            cur = nxt
             return _reverse_recursive(cur, prev)
 
-        self.head = _reverse_recursive(cur=self.head, prev=None)
+        self.head = _reverse_recursive(cur= self.head, prev = None)
 
 
+
+    def merge_two_sorted(self, second_list):
+        p = self.head
+        q = second_list.head
+
+        if not p:
+            return q
+        if not q:
+            return p
+
+        if p and q:
+            pass
+
+
+
+
+llist = LinkedList()
+
+llist.append(1)
+llist.append(3)
+llist.append(5)
+llist.append(7)
+llist.append(8)
+llist.append(10)
+
+second_list = LinkedList()
+
+second_list.append(2)
+second_list.append(4)
+second_list.append(6)
+second_list.append(8)
+second_list.append(9)
+second_list.append(11)
+
+llist.merge_two_sorted(second_list)
+
+
+
+
+
+'''
+
+
+llist = LinkedList()
+llist.append(1)
+llist.append(2)
+llist.append(3)
+llist.append(4)
+
+'''
+
+
+'''
         
 llist = LinkedList()
-llist.append("A")
-llist.append("B")
-llist.append("C")
-llist.append("D")
+llist.append(1)
+llist.append(2)
+llist.append(3)
+llist.append(4)
+llist.swap_nodes(1, 2)
+llist.print_list()
+llist.reverse_iterative()
+llist.reverse_recursive()
+
+
+
 
 #llist.reverse_iterative()
-llist.reverse_recursive()
+
+'''
 
 llist.print_list()
